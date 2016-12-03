@@ -1,5 +1,6 @@
 #include "header/login.h"
 #include "header/admin.h"
+#include "header/student.h"
 #include <iostream>
 #include <stdlib.h>
 using namespace std;
