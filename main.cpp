@@ -14,10 +14,10 @@ int main(){
 	}while(x < 0);
 	if(x==1){
 		Admin user;
-		int operationNumber = user.showOperations();
+		user.showOperations();
 
 		// Now pass operation number to the operate function that map operations and there code
-		user.operate(operationNumber);
+		user.operate();
 	}
 	else{
 		// do the operations for stduents

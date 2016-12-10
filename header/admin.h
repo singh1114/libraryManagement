@@ -7,9 +7,10 @@ class Admin{
 	int operationNumber;
 	public:
 		// This function asks for the admin to choose a operation
-		int showOperations(void);
-		void operate(int x);
+		void showOperations(void);
+		void operate(void);
 		void addStudent(void);
+		void showStudent(void);
 		void addBook(void);
 		void issueBook(void);
 		void takeBookBack(void);

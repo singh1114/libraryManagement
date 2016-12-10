@@ -17,21 +17,21 @@ void Student::getStudentInfo(void){
 	cin>>Student::phoneNumber;
 }
 
-void Student::showStudentInfo(void){
+void Student::showStudentInfo(Student student){
 	cout<<"name of the student : ";
-	cout<<this->name;
+	cout<<student.name;
 	cout<<endl;
 	cout<<"age of the student : ";
-	cout<<this->age;
+	cout<<student.age;
 	cout<<endl;
 	cout<<"class of the student : ";
-	cout<<this->studClass;
+	cout<<student.studClass;
 	cout<<endl;
 	cout<<"roll number of the student : ";
-	cout<<this->rollno;
+	cout<<student.rollno;
 	cout<<endl;
 	cout<<"phone number of the student : ";
-	cout<<this->phoneNumber;
+	cout<<student.phoneNumber;
 	cout<<endl;
 	
 }
