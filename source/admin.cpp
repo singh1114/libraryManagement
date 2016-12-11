@@ -1,5 +1,6 @@
 #include "../header/admin.h"
 #include "../header/student.h"
+#include "../header/book.h"
 #include <iostream>
 #include <stdlib.h>
 #include <fstream>
@@ -16,6 +17,7 @@ void Admin::showOperations(void){
 	cout<<endl;
 	cout<<"5. TAKE BOOKS BACK";
 	cout<<endl;
+	cout<<"6. SHOW ALL BOOKS\n";
 	cout<<"CHOOSE AN OPERATION FROM THE LIST";
 	cout<<endl;
 }
@@ -40,6 +42,9 @@ void Admin::operate(void){
 	else if(x == 5){
 		user.takeBookBack();
 	}
+	else if(x == 6){
+		user.showBooks();
+	}
 	else{
 		cout<<"Not a valid operation";
 	}
@@ -63,7 +68,6 @@ void Admin::addStudent(void){
 		cout<<"file is not open";
 	}
 	else{
-		file.seekg(file.eof());
 		do{
 			cout<<"Enter the data fo the student\n";
 
@@ -98,7 +102,7 @@ void Admin::showStudent(void){
 	}
 	else{
 		// Now bring the file pointer back to the starting position
-		//file.seekg(0);
+		file.seekg(0);
 
 		// Now it is the time to read the file.
 		// The following line reads a single object and shifts the file pointer after one object.
@@ -106,24 +110,96 @@ void Admin::showStudent(void){
 		// While the end of file is not reached.
 		while(!file.eof()){
 			cout<<endl;
-			cout<<endl;
+			cout<<"#################################################";
 			// This function shows the data on the terminal
 			student.showStudentInfo(student);
 			// This function reads another object
-			//file.read(reinterpret_cast<char*>(&student), sizeof(student));
+			file.read(reinterpret_cast<char*>(&student), sizeof(student));
 			cout<<endl;
-			cout<<endl;
+			cout<<"##################################################";
 		}
 		file.close();
 	}
 }
-
+/*
+Name of the function : addBook
+description : this function takes the info of the book using the function defined
+			  in the book.cpp file and writes the object to the file named 
+			  bookinfo.txt
+*/
 void Admin::addBook(void){
-	cout<<"nothing till noew";
+	cout<<"#############################################################\n";
+	// First create a object of the Books class.
+	Book book;
+	char x;
+
+	fstream file("files/booksInfo.txt", ios::app | ios::out);
+
+	if(!file.is_open()){
+		cout<<"File can't be opened";
+	}
+	else{
+		do{
+			cout<<"Enter the information of the book.\n";
+			
+			// Call the function to read the values
+			book.getBooks();
+
+			// write the object to the file.
+			file.write((char *)&book, sizeof(book));
+
+			cout<<"Do you want to enter more values.\n";
+			cin>>x;
+		}while(x == 'y');
+		cout<<"DATA entered is saved into the files";
+		file.close();
+	}
+	cout<<endl;
+	cout<<"##############################################\n";
+	cout<<endl;
+	Admin admin;
+	admin.showOperations();
+	admin.operate();
 }
 void Admin::issueBook(void){
 	cout<<"nothing till noew";
 }
 void Admin::takeBookBack(void){
 	cout<<"nothing till noew";
+}
+
+/*
+function name : showBooks
+description : This function will show all the books one by one by reading them from the 
+			  file ../files/booksInfo.txt
+*/
+void Admin::showBooks(void){
+	Book book;
+
+	//Open the file in input mode
+	fstream file("files/booksInfo.txt", ios::in);
+	if(!file.is_open()){
+		cout<<"File not opened";
+	}
+	else{
+		// Now bring the file pointer back to the starting position
+		file.seekg(0);
+
+		// Now it is the time to read the file.
+		// The following line reads a single object and shifts the file pointer after one object.
+		file.read((char *)& book, sizeof(book));
+		// While the end of file is not reached.
+		while(!file.eof()){
+			cout<<endl;
+			cout<<"#################################################\n";
+			// This function shows the data on the terminal
+			book.showBooks();
+			// This function reads another object
+			file.read((char *)&book, sizeof(book));
+			cout<<endl;
+			cout<<"##################################################\n";
+		}
+		file.close();
+	}
+
 }

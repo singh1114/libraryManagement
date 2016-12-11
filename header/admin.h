@@ -14,5 +14,6 @@ class Admin{
 		void addBook(void);
 		void issueBook(void);
 		void takeBookBack(void);
+		void showBooks(void);
 };
 #endif
