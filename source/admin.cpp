@@ -4,6 +4,8 @@
 #include <iostream>
 #include <stdlib.h>
 #include <fstream>
+#include <cstring>
+#include <string>
 // This function is going to show all the operations of the admin on the screen
 
 void Admin::showOperations(void){
@@ -73,12 +75,16 @@ void Admin::addStudent(void){
 
 			// Here is the function that get the students data.
 			student.getStudentInfo();
-
 			// Write the content to the file in the form of binary or any other form
-			file.write(reinterpret_cast<char*>(&student), sizeof(student));
+			file.write(student.name.c_str(), student.name.length() + 1);
+			file.write(reinterpret_cast<char*>(&student.age), sizeof(student.age));
+			file.write(reinterpret_cast<char*>(&student.studClass), sizeof(student.studClass));
+			file.write(reinterpret_cast<char*>(&student.rollno), sizeof(student.rollno));
+			file.write(reinterpret_cast<char*>(&student.phoneNumber), sizeof(student.phoneNumber));
 
 			// Ask the user if you want to enter more values.
 			cout<<"Do you want to enter more(y/n)?";
+			cin.ignore();
 			cin>>x;
 		}while(x=='y');
 		cout<<"ALL Student data is saved";
@@ -106,7 +112,12 @@ void Admin::showStudent(void){
 
 		// Now it is the time to read the file.
 		// The following line reads a single object and shifts the file pointer after one object.
-		file.read(reinterpret_cast<char*>(&student), sizeof(student));
+		getline(file, student.name,'\0');
+		file.read((char*)&student.age, sizeof(student.age));
+		file.read((char*)&student.studClass, sizeof(student.studClass));
+		file.read((char*)&student.rollno, sizeof(student.rollno));
+		file.read((char*)&student.phoneNumber, sizeof(student.phoneNumber));
+
 		// While the end of file is not reached.
 		while(!file.eof()){
 			cout<<endl;
@@ -114,7 +125,11 @@ void Admin::showStudent(void){
 			// This function shows the data on the terminal
 			student.showStudentInfo(student);
 			// This function reads another object
-			file.read(reinterpret_cast<char*>(&student), sizeof(student));
+			getline(file, student.name,'\0');
+			file.read((char*)&student.age, sizeof(student.age));
+			file.read((char*)&student.studClass, sizeof(student.studClass));
+			file.read((char*)&student.rollno, sizeof(student.rollno));
+			file.read((char*)&student.phoneNumber, sizeof(student.phoneNumber));
 			cout<<endl;
 			cout<<"##################################################";
 		}
@@ -161,12 +176,7 @@ void Admin::addBook(void){
 	admin.showOperations();
 	admin.operate();
 }
-void Admin::issueBook(void){
-	cout<<"nothing till noew";
-}
-void Admin::takeBookBack(void){
-	cout<<"nothing till noew";
-}
+
 
 /*
 function name : showBooks
@@ -187,7 +197,7 @@ void Admin::showBooks(void){
 
 		// Now it is the time to read the file.
 		// The following line reads a single object and shifts the file pointer after one object.
-		file.read((char *)& book, sizeof(book));
+		file.read((char *)&book, sizeof(book));
 		// While the end of file is not reached.
 		while(!file.eof()){
 			cout<<endl;
@@ -202,4 +212,26 @@ void Admin::showBooks(void){
 		file.close();
 	}
 
+}
+
+/*
+function name : issueBook
+description : This function allows the students to get the books issued.
+			  First it checks wheather the book is present, if yes is returned 
+			  then it get the book out of the bookInfo file and put it in the 
+			  issuedBooks file with a date( may be).
+*/
+
+void Admin::issueBook(void){
+	// Take in the book name that user want to get issued
+	Book book; 
+	string bookName = book.getBookToFind();
+
+	//Task : search for the book
+	//Task : Issue it
+	//Task : Put the book in the new file and remove the old one
+	
+}
+void Admin::takeBookBack(void){
+	cout<<"nothing till noew";
 }

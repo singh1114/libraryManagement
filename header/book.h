@@ -6,9 +6,9 @@
 using namespace std;
 
 class Book{
-	char bookName[80];
-	char publisher[80];
-	char Category[20];
+	string bookName;
+	string publisher;
+	string Category;
 	
 	public:
 		
@@ -18,8 +18,10 @@ class Book{
 		// A function to show the data of the books.
 		void showBooks(void);
 
-		// A function to search the books
-		bool findBooks(char bookName[80]);
+		// A function to find a book for issuing the book
+		string getBookToFind(void);
+
+		
 
 };
 #endif
