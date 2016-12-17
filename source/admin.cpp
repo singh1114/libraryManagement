@@ -91,7 +91,7 @@ void Admin::addStudent(void){
 		file.close();
 	}
 	cout<<endl;
-	cout<<"##############################################";
+	cout<<"##############################################\n";
 	cout<<endl;
 	Admin admin;
 	admin.showOperations();
@@ -121,17 +121,17 @@ void Admin::showStudent(void){
 		// While the end of file is not reached.
 		while(!file.eof()){
 			cout<<endl;
-			cout<<"#################################################";
+			cout<<"#################################################\n";
 			// This function shows the data on the terminal
 			student.showStudentInfo(student);
 			// This function reads another object
-			getline(file, student.name,'\0');
+			getline(file, student.name, '\0');
 			file.read((char*)&student.age, sizeof(student.age));
 			file.read((char*)&student.studClass, sizeof(student.studClass));
 			file.read((char*)&student.rollno, sizeof(student.rollno));
 			file.read((char*)&student.phoneNumber, sizeof(student.phoneNumber));
 			cout<<endl;
-			cout<<"##################################################";
+			cout<<"##################################################\n";
 		}
 		file.close();
 	}
@@ -161,9 +161,11 @@ void Admin::addBook(void){
 			book.getBooks();
 
 			// write the object to the file.
-			file.write((char *)&book, sizeof(book));
-
-			cout<<"Do you want to enter more values.\n";
+			file.write(book.bookName.c_str(), book.bookName.length() + 1);
+			file.write(book.publisher.c_str(), book.publisher.length() + 1);
+			file.write(book.Category.c_str(), book.Category.length() + 1);
+			file.write(reinterpret_cast<char*>(&book.issued), sizeof(book.issued));
+			cout<<"Do you want to enter more values.(y/n) : ";
 			cin>>x;
 		}while(x == 'y');
 		cout<<"DATA entered is saved into the files";
@@ -197,7 +199,10 @@ void Admin::showBooks(void){
 
 		// Now it is the time to read the file.
 		// The following line reads a single object and shifts the file pointer after one object.
-		file.read((char *)&book, sizeof(book));
+		getline(file, book.bookName, '\0');
+		getline(file, book.publisher, '\0');
+		getline(file, book.Category, '\0');
+		file.read((char*)&book.issued, sizeof(book.issued));
 		// While the end of file is not reached.
 		while(!file.eof()){
 			cout<<endl;
@@ -205,7 +210,10 @@ void Admin::showBooks(void){
 			// This function shows the data on the terminal
 			book.showBooks();
 			// This function reads another object
-			file.read((char *)&book, sizeof(book));
+			getline(file, book.bookName, '\0');
+			getline(file, book.publisher, '\0');
+			getline(file, book.Category, '\0');
+			file.read((char*)&book.issued, sizeof(book.issued));
 			cout<<endl;
 			cout<<"##################################################\n";
 		}
@@ -226,7 +234,15 @@ void Admin::issueBook(void){
 	// Take in the book name that user want to get issued
 	Book book; 
 	string bookName = book.getBookToFind();
-
+	cout<<bookName;
+	// Now pass this book to the search function
+	bool foundBook = book.findBook(bookName);
+	if(foundBook == true){
+		cout<<"Yes We found the book\n";
+	}
+	else{
+		cout<<"The book was not found.\n";
+	}
 	//Task : search for the book
 	//Task : Issue it
 	//Task : Put the book in the new file and remove the old one

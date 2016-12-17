@@ -3,14 +3,15 @@
 
 #include <iostream>
 #include <string>
+#include <fstream>
 using namespace std;
 
 class Book{
+	public:
 	string bookName;
 	string publisher;
 	string Category;
-	
-	public:
+	bool issued;
 		
 		// A function to take the data of the book.
 		void getBooks(void);
@@ -21,7 +22,8 @@ class Book{
 		// A function to find a book for issuing the book
 		string getBookToFind(void);
 
-		
+		// A function to search the books
+		bool findBook(string bookName);
 
 };
 #endif

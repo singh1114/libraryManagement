@@ -11,8 +11,8 @@ class Student{
 	string name;
 	int age;
 	int studClass;
-	int rollno;
-	int phoneNumber;
+	double rollno;
+	double phoneNumber;
 	//number of books that one student can get issued at a time are 4.
 	int booksNotIssued;
 	//public:
