@@ -57,8 +57,8 @@ string Book::getBookToFind(void){
 bool Book::findBook(string checkbookName){
 	Book book;
 	int tempVar = 0;
-	fstream file("files/booksInfo.txt", ios::in|ios::out|ios::app);
-	fstream tempFile("files/tempbook.txt", ios::in|ios::out);
+	fstream file("files/booksInfo.txt", ios::in|ios::app);
+	fstream tempFile("files/tempbook.txt", ios::out);
 	if(!file.is_open() || !tempFile.is_open()){
 		cout<<"We were not able to open the file. Check the permissions.\n";
 	}
@@ -85,7 +85,7 @@ bool Book::findBook(string checkbookName){
 			tempFile.write(reinterpret_cast<char *>(&book.issued), sizeof(book.issued));
 		}
 		else{
-			file.write(reinterpret_cast<char *>(&book.issued), sizeof(book.issued));
+			tempFile.write(reinterpret_cast<char *>(&book.issued), sizeof(book.issued));
 			while(!file.eof()){
 				getline(file, book.bookName, '\0');
 				getline(file, book.publisher, '\0');
@@ -97,10 +97,9 @@ bool Book::findBook(string checkbookName){
 				tempFile.write(book.Category.c_str(), book.Category.length() + 1);
 
 				filebookName = book.bookName;
-				if(checkbookName == filebookName){
+				if(checkbookName == filebookName && tempVar == 0){
 					book.issued = true;
 					tempVar++;
-					cout<<"was it here";
 					tempFile.write(reinterpret_cast<char *>(&book.issued), sizeof(book.issued));
 				}
 				else{
@@ -121,7 +120,6 @@ bool Book::findBook(string checkbookName){
 		}
 		file.close();
 		tempFile.close();
-		cout<<tempVar;
 	}
 	if(tempVar == 0){
 		return false;

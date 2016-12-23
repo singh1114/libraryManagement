@@ -243,8 +243,6 @@ void Admin::issueBook(void){
 	else{
 		cout<<"The book was not found.\n";
 	}
-	//Task : search for the book
-	//Task : Issue it
 	//Task : Put the book in the new file and remove the old one
 	
 }
