@@ -56,6 +56,69 @@ string Book::getBookToFind(void){
 
 bool Book::findBook(string checkbookName){
 	Book book;
+	// First of all check whether the book exist.
+	// If yes check if the issued flag is false.
+	// If yes check if the student's havebook flag is flase( Make this one)
+	// If all them says yes set.
+	// havebook = true; issued = true; 
+
+	// First of all go to the stored books file and open it up.
+	fstream file("files/booksInfo.txt" ,ios::in|ios::out);
+	fstream tempFile("files/tempbook.txt", ios::out|ios::in);
+
+	// Check whether the file is open
+	if(!file.is_open()){
+		cout<<"We were not able to open the file. Check the permissions.";
+	}
+	else{
+		// place the get and put pointer in the beginning
+		file.seekg(0); 
+		do{
+			// Take in the first object into the buffers.
+			getline(file, book.bookName, '\0');
+			getline(file, book.publisher, '\0');
+			getline(file, book.Category, '\0');
+			int pos = file.tellg();
+			file.read((char*)&book.issued, sizeof(book.issued));
+			if(book.bookName == checkbookName){
+				if(book.issued == 0){
+					int start = 0;
+					string s;
+					file.seekg(start);
+					s.resize(pos - start);
+					file.read(&s[0], pos-start);
+					bool boolVar = true;
+					s = s + reinterpret_cast<char *>(&boolVar);
+					tempFile.write(s.c_str(), pos-start + 1);
+					file.seekg(0, ios::end);
+					int end = file.tellg();
+					pos = pos + 1;
+					file.seekg(pos);
+					s.resize(end - pos);
+					file.read(&s[0], end - pos);
+					tempFile.write(s.c_str(), end - pos);
+
+					// Now write the tempFile to the file
+					file.seekp(0);
+					s.resize(end-start);
+					tempFile.seekg(0);
+					tempFile.read(&s[0], end-start);
+					file.write(s.c_str(), end-start);
+					
+					return true;
+				}
+				else{
+					cout<<"The book is already issued by a student. But let's check another similar book\n";
+					return false;
+				}
+			}
+		}while(!file.eof()); 
+	}
+	return false;
+
+
+	/*
+	Book book;
 	int tempVar = 0;
 	fstream file("files/booksInfo.txt", ios::in|ios::app);
 	fstream tempFile("files/tempbook.txt", ios::out);
@@ -126,5 +189,5 @@ bool Book::findBook(string checkbookName){
 	}
 	else{
 		return true;
-	}
+	}*/
 }
